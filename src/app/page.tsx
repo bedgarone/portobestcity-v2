@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { type SanityDocument } from 'next-sanity'
 import Image from 'next/image'
 
 import { client } from '@/sanity/client'
@@ -7,6 +6,7 @@ import { REVALIDATE_HOURLY } from '@/app/utils'
 import PostCard from '@/app/components/PostCard'
 import { Post } from '@/app/types'
 import { SearchBar } from '@/app/components/SearchBar'
+import { Suspense } from 'react'
 
 //still missing some specific validations: e.g. hidden - TBD
 const POSTS_QUERY = `*[_type == "post" && defined(slug.current)] | order(publishedAt desc)[0...4]{_id, title, slug, publishedAt}`
@@ -31,7 +31,9 @@ export default async function HomePage() {
         <Link href="/visiting" className="underline">
           Visiting
         </Link>
-        <SearchBar />
+        <Suspense>
+          <SearchBar />
+        </Suspense>
       </div>
       <Image src="/assets/TilesRepeatMedium_Soft.png" width={1000} height={500} quality={100} alt="Tiles Background" />
       <img className="logo-test" src="/assets/LogoVF_Web.png" alt="PBC Logo" />

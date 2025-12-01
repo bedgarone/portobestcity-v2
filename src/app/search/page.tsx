@@ -2,6 +2,7 @@ import { client } from '@/sanity/client'
 import { Post } from '@/app/types'
 import { SearchBar } from '@/app/components/SearchBar'
 import PostsList from '@/app/components/PostsList'
+import { Suspense } from 'react'
 
 const SEARCH_QUERY = `*[_type == "post" && (title match $searchQuery || pt::text(body) match $searchQuery)] | order(publishedAt desc) {_id, title, slug, publishedAt}`
 
@@ -20,7 +21,9 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     <main className="container mx-auto min-h-screen max-w-3xl p-8">
       <header className="flex flex-col gap-4">
         <h1 className="text-4xl font-bold">Search News</h1>
-        <SearchBar />
+        <Suspense>
+          <SearchBar />
+        </Suspense>
       </header>
 
       <section>
