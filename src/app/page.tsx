@@ -35,9 +35,10 @@ export default async function HomePage() {
           <SearchBar />
         </Suspense>
       </div>
+      UPDATE NEEDED (NEXTJS): AFTER EMAIL RECEIVED ABOUT SECURITY FIX
       <Image src="/assets/TilesRepeatMedium_Soft.png" width={1000} height={500} quality={100} alt="Tiles Background" />
       <img className="logo-test" src="/assets/LogoVF_Web.png" alt="PBC Logo" />
-      <h1 className="mb-8 text-4xl font-bold">Posts</h1>
+      <h1 className="text-dark-blue mb-8 text-4xl font-bold">Posts</h1>
       <ul className="flex flex-col gap-y-4">
         {posts.map((post) => (
           <PostCard key={post._id} post={post} />

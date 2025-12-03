@@ -1,13 +1,16 @@
 @import 'tailwindcss';
-@plugin "@tailwindcss/typography";
 
-:root {
-  --pbc-dark-blue: #0055ab;
-  --pbc-blue: #018be1;
-  --pbc-light-blue: #84baf4;
-}
+@theme {
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-bluePBC: #018be1;
+  --color-light-blue: #84baf4;
+  --color-dark-blue: #0055ab;
+  --color-surface-blue: #d8eafb;
+  --color-dark-grey: #202020;
+  --color-medium-grey: #707070;
+  --color-light-grey: #dedede;
 
-body {
-  color: var(--pbc-dark-blue);
-  font-family: Arial, Helvetica, sans-serif;
+  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-poppins);
 }
