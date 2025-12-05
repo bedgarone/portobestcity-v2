@@ -1,6 +1,6 @@
-import { urlFor } from '../utils'
+import { urlFor } from '../app/utils'
 import Image from 'next/image'
-import { SanityImage } from '../types'
+import { SanityImage } from '../app/types'
 
 export function ImageStandalone({ value }: { value: SanityImage }) {
   const imageUrl = urlFor(value.asset)?.url()

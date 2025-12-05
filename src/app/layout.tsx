@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Playfair_Display, Poppins } from 'next/font/google'
 import './globals.css'
 import Script from 'next/script'
+import { Header } from '@/components/Header'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -36,7 +37,10 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
       </head>
-      <body className="font-serif">{children}</body>
+      <body className="font-serif">
+        <Header />
+        {children}
+      </body>
     </html>
   )
 }

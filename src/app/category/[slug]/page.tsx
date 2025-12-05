@@ -2,7 +2,7 @@ import { client } from '@/sanity/client'
 import Link from 'next/link'
 import { REVALIDATE_HOURLY } from '@/app/utils'
 import { Post } from '@/app/types'
-import PostsList from '@/app/components/PostsList'
+import PostsList from '@/components/PostsList'
 
 const CATEGORY_QUERY = `*[_type == 'category' && slug.current == $slug][0]{title}`
 const POSTS_QUERY = `*[_type == 'post' && hidden != true && category._ref in *[_type == 'category' && slug.current == $slug]._id]{...,author->,category->} | order(publishedAt desc)`

@@ -1,7 +1,7 @@
 import { client } from '@/sanity/client'
 import { Post } from '@/app/types'
-import { SearchBar } from '@/app/components/SearchBar'
-import PostsList from '@/app/components/PostsList'
+import { SearchBar } from '@/components/SearchBar'
+import PostsList from '@/components/PostsList'
 import { Suspense } from 'react'
 
 const SEARCH_QUERY = `*[_type == "post" && (title match $searchQuery || pt::text(body) match $searchQuery)] | order(publishedAt desc) {_id, title, slug, publishedAt}`

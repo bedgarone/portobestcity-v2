@@ -2,7 +2,7 @@
 
 import { Post } from '@/app/types'
 import { useLoadMore } from '@/app/hooks/useLoadMore'
-import PostCard from '@/app/components/PostCard'
+import PostCard from '@/components/PostCard'
 
 const PostsList: React.FC<{ posts: Post[] }> = ({ posts }) => {
   const { visibleItems, hasMore, loadMore } = useLoadMore(posts, 9)

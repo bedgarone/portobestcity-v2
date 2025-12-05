@@ -3,7 +3,7 @@ import { client } from '@/sanity/client'
 import Link from 'next/link'
 import { REVALIDATE_HOURLY, urlFor } from '@/app/utils'
 import { Post } from '@/app/types'
-import { ImageStandalone } from '@/app/components/ImageStandalone'
+import { ImageStandalone } from '@/components/ImageStandalone'
 
 const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]`
 
