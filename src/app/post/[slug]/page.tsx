@@ -16,7 +16,7 @@ const portableTextComponents = {
 }
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
-  const post = await client.fetch<Post>(POST_QUERY, await params, options)
+  const post: Post = await client.fetch<Post>(POST_QUERY, await params, options)
   const postImageUrl = urlFor(post.mainImage)?.url()
 
   return (

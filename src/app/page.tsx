@@ -1,10 +1,9 @@
 import { client } from '@/sanity/client'
 import { MAIN_CONTAINER_CLASSES, REVALIDATE_HOURLY } from '@/app/utils'
-import PostCard from '@/components/PostCard'
 import { Post } from '@/app/types'
+import PostsList from '@/components/PostsList'
 
-//still missing some specific validations: e.g. hidden - TBD
-const POSTS_QUERY = `*[_type == "post" && defined(slug.current)] | order(publishedAt desc)[0...4]{_id, title, slug, publishedAt}`
+const POSTS_QUERY = `*[_type == 'post' && defined(slug.current) && hidden != true]{...,author->,category->} | order(publishedAt desc)[0..20]`
 
 const options = { next: { revalidate: REVALIDATE_HOURLY } }
 
@@ -13,11 +12,7 @@ export default async function HomePage() {
 
   return (
     <div className={MAIN_CONTAINER_CLASSES}>
-      <div className="mt-6 flex flex-col gap-y-4">
-        {posts.map((post) => (
-          <PostCard key={post._id} post={post} />
-        ))}
-      </div>
+      <PostsList posts={posts} />
     </div>
   )
 }

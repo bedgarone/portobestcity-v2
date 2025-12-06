@@ -1,6 +1,6 @@
 import { client } from '@/sanity/client'
 import Link from 'next/link'
-import { REVALIDATE_HOURLY } from '@/app/utils'
+import { REVALIDATE_HOURLY, MAIN_CONTAINER_CLASSES } from '@/app/utils'
 import { Post } from '@/app/types'
 import PostsList from '@/components/PostsList'
 
@@ -14,7 +14,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   const posts = await client.fetch<Post[]>(POSTS_QUERY, await params, options)
 
   return (
-    <main className="container mx-auto flex min-h-screen max-w-3xl flex-col gap-4 p-8">
+    <main className={MAIN_CONTAINER_CLASSES}>
       <h1 className="text-3xl font-bold">Posts in category: {category?.title}</h1>
       {posts.length === 0 && <p>No posts found in this category.</p>}
       <PostsList posts={posts} />

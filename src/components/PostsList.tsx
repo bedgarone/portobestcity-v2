@@ -9,7 +9,7 @@ const PostsList: React.FC<{ posts: Post[] }> = ({ posts }) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-4">
+      <div className="divide-light-grey flex flex-col gap-6 divide-y-1">
         {visibleItems.map((post: Post) => (
           <PostCard key={post._id} post={post} />
         ))}

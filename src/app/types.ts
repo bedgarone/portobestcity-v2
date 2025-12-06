@@ -1,13 +1,13 @@
 import { SanityImageObject } from '@sanity/image-url/lib/types/types'
-import { SanityDocument } from 'next-sanity'
+import { PortableTextBlock, SanityDocument } from 'next-sanity'
 
 export interface Post extends SanityDocument {
   title: string
   subtitle: string
   slug: SanitySlug
   author: SanityReference
-  //body -> TS not complaining - TBA
-  category: SanityReference
+  body: PortableTextBlock[]
+  category: Category
   publishedAt: string
   mainImage: {
     _type: string
@@ -29,4 +29,9 @@ export interface SanityReference {
 export interface SanitySlug {
   _type: string
   current: string
+}
+
+export interface Category extends SanityDocument {
+  title: string
+  slug: SanitySlug
 }

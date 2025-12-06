@@ -16,4 +16,12 @@ const { projectId, dataset } = client.config()
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset ? imageUrlBuilder({ projectId, dataset }).image(source) : null
 
-export { urlFor }
+const dateFormat = (publishedAt: string) => {
+  const d = new Date(publishedAt)
+  const day = String(d.getDate()).padStart(2, '0')
+  const month = d.toLocaleString('en-US', { month: 'short' }).toUpperCase()
+  const year = d.getFullYear()
+  return `${day} ${month}, ${year}`
+}
+
+export { urlFor, dateFormat }

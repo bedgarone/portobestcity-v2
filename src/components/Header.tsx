@@ -18,7 +18,7 @@ export function Header() {
   }
 
   return (
-    <header>
+    <header className="mb-4">
       <div className="flex">
         <div className="relative flex-1">
           <div className="[0_50%] h-16 w-full overflow-hidden bg-[url('/assets/TilesRepeatMedium_Soft.png')] bg-[length:auto_170%] bg-repeat-x opacity-50 lg:h-26"></div>
@@ -45,7 +45,6 @@ export function Header() {
             <hr className="border-t-surface-blue border-0 border-t" />
 
             <nav className="flex flex-col gap-8 text-2xl">
-              {/* TBD onClick (close menu + router.push) */}
               {navigationPages.map((page) => (
                 <span
                   key={page.link}
@@ -71,11 +70,16 @@ export function Header() {
         <Image
           src="/assets/LogoVF_Web.png"
           alt="PortoBestCity"
-          className="relative"
+          className="relative cursor-pointer p-0"
           width={250}
           height={300}
           quality={100}
           priority
+          role="link"
+          aria-label="Go to home"
+          onClick={() => {
+            router.push('/')
+          }}
         />
       </div>
     </header>
