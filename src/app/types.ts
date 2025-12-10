@@ -34,4 +34,5 @@ export interface SanitySlug {
 export interface Category extends SanityDocument {
   title: string
   slug: SanitySlug
+  description?: string
 }

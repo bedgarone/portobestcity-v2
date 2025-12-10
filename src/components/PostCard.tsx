@@ -1,12 +1,12 @@
 import { Post } from '@/app/types'
 import Link from 'next/link'
 import Image from 'next/image'
-import { dateFormat, urlFor } from '@/app/utils'
-import { Clock4 } from 'lucide-react'
+import { urlFor } from '@/app/utils'
+import DateStamp from '@/components/DateStamp'
 
-const PostCard: React.FC<{ post: Post }> = ({ post }) => {
+const PostCard: React.FC<{ post: Post; omitCategory: boolean }> = ({ post, omitCategory }) => {
   const postImageUrl = urlFor(post.mainImage)?.url()
-  console.log(post.category)
+
   return (
     <Link href={`/post/${post.slug.current}`}>
       {post.original ? (
@@ -23,7 +23,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
             )}
 
             <div className="absolute top-2 left-2 flex flex-col gap-1">
-              {post.category?.title && (
+              {post.category?.title && !omitCategory && (
                 <span className="bg-surface-blue text-dark-blue inline-block px-2 py-1 text-center font-sans text-xs font-semibold uppercase shadow-sm">
                   {post.category.title}
                 </span>
@@ -38,13 +38,10 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
           </div>
 
           <div className="my-3 space-y-2">
-            <h2 className="text-dark-grey group-hover:text-dark-blue text-xl font-medium transition-colors">
+            <h2 className="text-dark-grey group-hover:text-dark-blue text-xl leading-tight font-medium transition-colors">
               {post.title}
             </h2>
-            <div className="text-medium-grey flex items-center gap-1">
-              <Clock4 className="size-3" />
-              <div className="font-sans text-sm font-medium">{dateFormat(post.publishedAt)}</div>
-            </div>
+            <DateStamp dateString={post.publishedAt} />
             <p className="text-medium-grey line-clamp-2 font-sans text-sm">{post.subtitle}</p>
           </div>
         </article>
@@ -62,18 +59,18 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
             </div>
           )}
 
-          <div className="flex flex-col">
-            <div>
-              {post.category?.title && (
-                <span className="text-dark-blue inline-block font-sans text-xs font-medium uppercase">
-                  {post.category.title}
-                </span>
-              )}
-            </div>
+          <div className="flex flex-col gap-2">
+            {post.category?.title && !omitCategory && (
+              <span className="text-dark-blue inline-block font-sans text-xs font-medium uppercase">
+                {post.category.title}
+              </span>
+            )}
 
-            <h2 className="text-dark-grey group-hover:text-dark-blue line-clamp-3 text-lg font-medium transition-colors">
+            <h2 className="text-dark-grey group-hover:text-dark-blue line-clamp-3 text-lg leading-tight font-medium transition-colors">
               {post.title}
             </h2>
+
+            {omitCategory && <DateStamp dateString={post.publishedAt} />}
           </div>
         </article>
       )}
