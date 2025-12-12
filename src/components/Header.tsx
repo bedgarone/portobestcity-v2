@@ -59,7 +59,7 @@ export function Header() {
             <hr className="border-t-surface-blue border-0 border-t" />
 
             <p className="font-serif text-lg italic">
-              Welcome to Porto! <br />
+              Welcome to Porto. <br />
               We respect your <strong>privacy</strong>: no tracking, no cookies consent, and no ads chasing you around.
               Just genuine Portuense warmth, Douro magic, and freedom to explore.
             </p>

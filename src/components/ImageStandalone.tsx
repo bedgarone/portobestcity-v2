@@ -1,24 +1,28 @@
-import { urlFor } from '../app/utils'
+import { urlFor, DETAULT_IMAGE_SIZES } from '@/app/utils'
 import Image from 'next/image'
-import { SanityImage } from '../app/types'
+import { SanityImage } from '@/app/types'
+import { getImageDimensions } from '@sanity/asset-utils'
 
 export function ImageStandalone({ value }: { value: SanityImage }) {
   const imageUrl = urlFor(value.asset)?.url()
+  const { width, height } = getImageDimensions(value)
   const caption = value.caption
   if (!imageUrl) {
     return null
   }
   return (
-    // <Image
-    //   src={imageUrl}
-    //   alt={'Imagem do post'} //CHANGE THIS TO A DYNAMIC ALT TEXT IF NEEDED
-    //   width={800}
-    //   height={600}
-    //   className="my-8 rounded-lg"
-    // />
     <div>
-      <img src={imageUrl} alt="Imagem do post" className="rounded-lg" width={800} height={600} />
-      {caption && <p className="mb-2 text-center text-gray-500 italic">{caption}</p>}
+      <Image
+        src={imageUrl}
+        alt={caption ?? 'Image'}
+        width={width}
+        height={height}
+        quality={75}
+        sizes={DETAULT_IMAGE_SIZES}
+        className="h-auto w-full"
+        loading="lazy"
+      />
+      {caption && <p className="text-blue mt-1 mb-2 text-center font-sans text-xs">{caption}</p>}
     </div>
   )
 }

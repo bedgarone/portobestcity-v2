@@ -1,23 +1,24 @@
-import { SanityImageObject } from '@sanity/image-url/lib/types/types'
+import { SanityImageObjectStub } from '@sanity/asset-utils'
 import { PortableTextBlock, SanityDocument } from 'next-sanity'
 
 export interface Post extends SanityDocument {
   title: string
   subtitle: string
   slug: SanitySlug
-  author: SanityReference
+  author: Author
   body: PortableTextBlock[]
   category: Category
   publishedAt: string
   mainImage: {
     _type: string
-    asset: SanityReference
+    asset: { _id: string; metadata: { dimensions: { width: number; height: number } } }
   }
+  imageSource?: string
   original: boolean
   keywords: SanityReference[]
 }
 
-export interface SanityImage extends SanityImageObject {
+export interface SanityImage extends SanityImageObjectStub {
   caption?: string
 }
 
@@ -35,4 +36,9 @@ export interface Category extends SanityDocument {
   title: string
   slug: SanitySlug
   description?: string
+}
+
+export interface Author extends SanityDocument {
+  name: string
+  slug: SanitySlug
 }
