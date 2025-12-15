@@ -15,7 +15,7 @@ export interface Post extends SanityDocument {
   }
   imageSource?: string
   original: boolean
-  keywords: SanityReference[]
+  keywords: Keyword[]
 }
 
 export interface SanityImage extends SanityImageObjectStub {
@@ -41,4 +41,8 @@ export interface Category extends SanityDocument {
 export interface Author extends SanityDocument {
   name: string
   slug: SanitySlug
+}
+
+export interface Keyword extends SanityDocument {
+  name: string
 }

@@ -8,8 +8,17 @@ import { UserRoundPen } from 'lucide-react'
 import Image from 'next/image'
 import { YouTubeEmbed } from '@/components/YoutubeEmbed'
 import { ImageGallery } from '@/components/ImageGallery'
+import Link from 'next/link'
+import PostsList from '@/components/PostsList'
 
-const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]{..., author->, category->, mainImage {..., asset->{_id, metadata {dimensions}}}}`
+const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]{..., author->, category->, mainImage {..., asset->{_id, metadata {dimensions}}}, keywords[]->}`
+const RELATED_POSTS_QUERY = `*[_type == 'post' && hidden != true && count((keywords[]->_id)[@ in $keywordIds]) > 0 && slug.current != $currentSlug]{
+  ...,
+  author->,
+  category->,
+  "matchCount": count((keywords[]->_id)[@ in $keywordIds])
+} | order(matchCount desc, publishedAt desc)[0..2]
+`
 
 const options = { next: { revalidate: REVALIDATE_HOURLY } }
 
@@ -31,39 +40,80 @@ const portableTextComponents = {
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
   const post: Post = await client.fetch<Post>(POST_QUERY, await params, options)
   const postImageUrl = urlFor(post.mainImage)?.url()
-  console.log(post)
+  const relatedPosts: Post[] = await client.fetch<Post[]>(
+    RELATED_POSTS_QUERY,
+    { keywordIds: post.keywords.map((k) => k._id), currentSlug: post.slug.current },
+    options,
+  )
+
   return (
-    <main className={MAIN_CONTAINER_CLASSES + ' text-dark-grey'}>
-      <div className="mb-6">
-        <div className="text-dark-blue font-sans font-medium uppercase">{post.category.title}</div>
-        <h1 className="mb-2 text-3xl font-semibold">{post.title}</h1>
-        <div className="flex gap-4">
-          <DateStamp dateString={post.publishedAt} />
-          <div className="text-medium-grey flex items-center gap-1">
-            <UserRoundPen className="size-2.5" />
-            <div className="font-sans text-xs font-medium uppercase">{post.author.name}</div>
+    <main className="text-dark-grey">
+      <div className={MAIN_CONTAINER_CLASSES}>
+        <div className="mb-6">
+          <Link href={`/category/${post.category.slug.current}`}>
+            <div className="text-dark-blue hover:text-blue font-sans font-medium uppercase transition-colors">
+              {post.category.title}
+            </div>
+          </Link>
+          <h1 className="mb-2 text-3xl font-semibold">{post.title}</h1>
+          <div className="flex gap-4">
+            <DateStamp dateString={post.publishedAt} />
+            <div className="text-medium-grey flex items-center gap-1">
+              <UserRoundPen className="size-2.5" />
+              <div className="font-sans text-xs font-medium uppercase">{post.author.name}</div>
+            </div>
           </div>
         </div>
+        <div className="text-medium-grey bg-surface-blue mb-4 px-2 py-1 italic">{post.subtitle}</div>
+        {postImageUrl && (
+          <div className="mb-4">
+            <Image
+              src={postImageUrl}
+              alt={'Main image of ' + post.title}
+              width={post.mainImage.asset.metadata.dimensions.width}
+              height={post.mainImage.asset.metadata.dimensions.height}
+              quality={75}
+              sizes={DETAULT_IMAGE_SIZES}
+              className="h-auto w-full"
+              priority
+            />
+            {post.imageSource && (
+              <p className="text-credit-grey mt-1 text-right font-sans text-xs">{post.imageSource}</p>
+            )}
+          </div>
+        )}
+        <div className="prose prose-lg prose-headings:font-bold prose-h2:text-2xl prose-h3:text-xl prose-h4:text-xl prose-p:text-base max-w-none space-y-4">
+          {Array.isArray(post.body) && <PortableText value={post.body} components={portableTextComponents} />}
+        </div>
+
+        {post.keywords.length > 0 && (
+          <div className="mt-4 mb-6">
+            <div className="flex flex-wrap gap-2">
+              {post.keywords.map((keyword) => (
+                <Link key={keyword._id} href={`/keyword/${keyword.name}`}>
+                  <span
+                    key={keyword._id}
+                    className="bg-light-grey text-blue inline-block px-2 py-1 text-center font-sans text-xs tracking-wider uppercase"
+                  >
+                    {`#${keyword.name}`}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
-      <div className="text-medium-grey bg-surface-blue mb-4 px-2 py-1 italic">{post.subtitle}</div>
-      {postImageUrl && (
-        <div className="mb-4">
-          <Image
-            src={postImageUrl}
-            alt={'Main image of ' + post.title}
-            width={post.mainImage.asset.metadata.dimensions.width}
-            height={post.mainImage.asset.metadata.dimensions.height}
-            quality={75}
-            sizes={DETAULT_IMAGE_SIZES}
-            className="h-auto w-full"
-            priority
-          />
-          {post.imageSource && <p className="text-credit-grey mt-1 text-right font-sans text-xs">{post.imageSource}</p>}
+
+      {relatedPosts.length > 0 && (
+        <div className="bg-surface-blue mb-4 px-2 py-4">
+          <div className={MAIN_CONTAINER_CLASSES}>
+            <div className="text-blue mb-4 font-sans text-xl font-medium tracking-wide uppercase">Related News</div>
+            <div className="grid gap-8">
+              <PostsList posts={relatedPosts} omitCategory />
+            </div>
+          </div>
         </div>
       )}
-      <div className="prose prose-lg prose-headings:font-bold prose-h2:text-2xl prose-h3:text-xl prose-h4:text-xl prose-p:text-base max-w-none space-y-4">
-        {Array.isArray(post.body) && <PortableText value={post.body} components={portableTextComponents} />}
-      </div>
     </main>
   )
 }
