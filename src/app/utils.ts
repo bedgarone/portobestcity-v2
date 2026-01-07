@@ -13,6 +13,11 @@ export const navigationPages = [
   // { title: 'Culture', link: '/visiting' },
 ]
 
+export const aboutPages = [
+  { title: 'Editorial', link: '/editorial' },
+  { title: 'Technical File', link: '/technical' },
+]
+
 const { projectId, dataset } = client.config()
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset ? imageUrlBuilder({ projectId, dataset }).image(source) : null

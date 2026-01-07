@@ -3,6 +3,7 @@
 import { Post } from '@/app/types'
 import { useLoadMore } from '@/app/hooks/useLoadMore'
 import PostCard from '@/components/PostCard'
+import { Button } from '@/components/ui/button'
 
 const PostsList: React.FC<{ posts: Post[]; omitCategory?: boolean }> = ({ posts, omitCategory }) => {
   const { visibleItems, hasMore, loadMore } = useLoadMore(posts, 9)
@@ -15,9 +16,9 @@ const PostsList: React.FC<{ posts: Post[]; omitCategory?: boolean }> = ({ posts,
         ))}
       </div>
       {hasMore && (
-        <button onClick={loadMore} className="bottom-4 rounded">
+        <Button onClick={loadMore} variant="default" className="mx-auto my-2">
           Load More
-        </button>
+        </Button>
       )}
     </div>
   )

@@ -3,6 +3,7 @@ import { Playfair_Display, Poppins } from 'next/font/google'
 import './globals.css'
 import Script from 'next/script'
 import { Header } from '@/components/Header'
+import Footer from '@/components/Footer'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -37,9 +38,10 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
       </head>
-      <body className="font-serif">
+      <body className="flex min-h-screen flex-col font-serif">
         <Header />
-        {children}
+        <main className="flex-grow">{children}</main>
+        <Footer />
       </body>
     </html>
   )
