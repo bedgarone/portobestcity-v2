@@ -1,10 +1,20 @@
 import type { Metadata } from 'next'
+import { Playfair_Display, Poppins } from 'next/font/google'
 import './globals.css'
-import { Playfair_Display } from 'next/font/google'
 import Script from 'next/script'
+import { Header } from '@/components/Header'
+import Footer from '@/components/Footer'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
+  variable: '--font-playfair',
+  display: 'swap',
+})
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-poppins',
   display: 'swap',
 })
 
@@ -19,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${playfair.variable} ${poppins.variable} antialiased`}>
       <head>
         {/* GoatCounter */}
         <Script
@@ -28,7 +38,11 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
       </head>
-      <body className={`${playfair.className} antialiased`}>{children}</body>
+      <body className="flex min-h-screen flex-col font-serif">
+        <Header />
+        <main className="flex-grow">{children}</main>
+        <Footer />
+      </body>
     </html>
   )
 }

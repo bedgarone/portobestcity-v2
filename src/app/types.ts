@@ -1,23 +1,25 @@
-import { SanityImageObject } from '@sanity/image-url/lib/types/types'
-import { SanityDocument } from 'next-sanity'
+import { SanityImageObjectStub } from '@sanity/asset-utils'
+import { PortableTextBlock, SanityDocument } from 'next-sanity'
 
 export interface Post extends SanityDocument {
   title: string
   subtitle: string
   slug: SanitySlug
-  author: SanityReference
-  //body -> TS not complaining - TBA
-  category: SanityReference
+  author: Author
+  body: PortableTextBlock[]
+  category: Category
   publishedAt: string
   mainImage: {
     _type: string
-    asset: SanityReference
+    asset: { _id: string; metadata: { dimensions: { width: number; height: number } } }
   }
+  imageSource?: string
   original: boolean
-  keywords: SanityReference[]
+  keywords: Keyword[]
+  source: { sourceName: string; sourceURL: string }
 }
 
-export interface SanityImage extends SanityImageObject {
+export interface SanityImage extends SanityImageObjectStub {
   caption?: string
 }
 
@@ -29,4 +31,19 @@ export interface SanityReference {
 export interface SanitySlug {
   _type: string
   current: string
+}
+
+export interface Category extends SanityDocument {
+  title: string
+  slug: SanitySlug
+  description?: string
+}
+
+export interface Author extends SanityDocument {
+  name: string
+  slug: SanitySlug
+}
+
+export interface Keyword extends SanityDocument {
+  name: string
 }
