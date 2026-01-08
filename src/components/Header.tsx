@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/s
 import { SearchBar } from '@/components/SearchBar'
 import { MenuIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 export function Header() {
   const router = useRouter()
@@ -81,6 +82,17 @@ export function Header() {
             router.push('/')
           }}
         />
+      </div>
+      <div className={MAIN_CONTAINER_CLASSES + ' text-dark-blue mb-4 hidden font-sans lg:flex lg:justify-end lg:gap-6'}>
+        {navigationPages.map((page) => (
+          <Link
+            key={page.link}
+            href={page.link}
+            className="text-dark-blue hover:text-blue leading-none font-semibold tracking-wide uppercase transition-colors"
+          >
+            {page.title}
+          </Link>
+        ))}
       </div>
     </header>
   )

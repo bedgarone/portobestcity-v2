@@ -16,6 +16,7 @@ export interface Post extends SanityDocument {
   imageSource?: string
   original: boolean
   keywords: Keyword[]
+  source: { sourceName: string; sourceURL: string }
 }
 
 export interface SanityImage extends SanityImageObjectStub {

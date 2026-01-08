@@ -5,9 +5,9 @@ import Link from 'next/link'
 
 const Footer: React.FC = () => {
   return (
-    <footer className="mt-6 font-sans text-white">
+    <footer className="mt-10 font-sans text-white">
       <div
-        className="h-10 w-full"
+        className="h-10 w-full lg:h-6"
         style={{
           backgroundImage: 'url("/assets/FooterTilesRepeat.png")',
           backgroundRepeat: 'repeat-x',
@@ -32,9 +32,13 @@ const Footer: React.FC = () => {
             </Link>
             <div className="mt-2">ERC n. 127874</div>
           </div>
-          <div className="text-light-blue flex flex-col space-y-4 text-lg">
+          <div className="flex flex-col space-y-4 text-lg">
             {navigationPages.map((page) => (
-              <Link key={page.link} href={page.link} className="leading-none font-semibold tracking-wide uppercase">
+              <Link
+                key={page.link}
+                href={page.link}
+                className="text-light-blue hover:text-blue leading-none font-semibold tracking-wide uppercase transition-colors"
+              >
                 {page.title}
               </Link>
             ))}
@@ -50,7 +54,11 @@ const Footer: React.FC = () => {
             </a>
             <div className="mt-4 flex flex-col space-y-2 text-sm">
               {aboutPages.map((page) => (
-                <Link key={page.link} href={page.link} className="font-semibold">
+                <Link
+                  key={page.link}
+                  href={page.link}
+                  className="hover:text-light-blue font-semibold transition-colors"
+                >
                   {page.title}
                 </Link>
               ))}

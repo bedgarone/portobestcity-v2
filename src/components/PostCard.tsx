@@ -4,12 +4,16 @@ import Image from 'next/image'
 import { urlFor } from '@/app/utils'
 import DateStamp from '@/components/DateStamp'
 
-const PostCard: React.FC<{ post: Post; omitCategory: boolean }> = ({ post, omitCategory }) => {
+const PostCard: React.FC<{ post: Post; omitCategory: boolean; compact: boolean }> = ({
+  post,
+  omitCategory,
+  compact,
+}) => {
   const postImageUrl = urlFor(post.mainImage)?.url()
 
   return (
     <Link href={`/post/${post.slug.current}`}>
-      {post.original ? (
+      {post.original && !compact ? (
         <article className="group mb-5 cursor-pointer">
           <div className="relative aspect-[16/9] w-full overflow-hidden">
             {postImageUrl && (
@@ -70,7 +74,15 @@ const PostCard: React.FC<{ post: Post; omitCategory: boolean }> = ({ post, omitC
               {post.title}
             </h2>
 
-            {omitCategory && <DateStamp dateString={post.publishedAt} />}
+            <div className="flex space-x-2.5">
+              {omitCategory && <DateStamp dateString={post.publishedAt} />}
+
+              {compact && post.original && (
+                <span className="bg-dark-blue inline-block max-w-20 px-2 py-0.5 text-center font-sans text-[10px] font-semibold text-white uppercase">
+                  Original
+                </span>
+              )}
+            </div>
           </div>
         </article>
       )}

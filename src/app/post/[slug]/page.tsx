@@ -4,7 +4,7 @@ import { REVALIDATE_HOURLY, urlFor, MAIN_CONTAINER_CLASSES, DETAULT_IMAGE_SIZES 
 import { Post } from '@/app/types'
 import { ImageStandalone } from '@/components/ImageStandalone'
 import DateStamp from '@/components/DateStamp'
-import { UserRoundPen } from 'lucide-react'
+import { UserRoundPen, Newspaper } from 'lucide-react'
 import Image from 'next/image'
 import { YouTubeEmbed } from '@/components/YoutubeEmbed'
 import { ImageGallery } from '@/components/ImageGallery'
@@ -62,6 +62,16 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
               <UserRoundPen className="size-2.5" />
               <div className="font-sans text-xs font-medium uppercase">{post.author.name}</div>
             </div>
+            {!post.original && post.source.sourceName && (
+              <div className="text-medium-grey flex items-center gap-1">
+                <Newspaper className="size-2.5" />
+                <div className="text-credit-grey hover:text-medium-grey font-sans text-xs font-medium uppercase transition-colors">
+                  <a href={post.source.sourceURL} target="_blank">
+                    {post.source.sourceName}
+                  </a>
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <div className="text-medium-grey bg-surface-blue mb-4 px-2 py-1 italic">{post.subtitle}</div>
@@ -87,7 +97,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         </div>
 
         {post.keywords.length > 0 && (
-          <div className="mt-4 mb-6">
+          <div className="mt-6">
             <div className="flex flex-wrap gap-2">
               {post.keywords.map((keyword) => (
                 <Link key={keyword._id} href={`/keyword/${keyword.name}`}>
@@ -102,6 +112,34 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
             </div>
           </div>
         )}
+        {/* if not original, put a link with Source:  (link) plus explanation about non-original content */}
+        <div className="text-credit-grey py-6 text-end font-sans text-xs">
+          {post.original ? (
+            <p>
+              All rights reserved by PortoBestCity. Any copying, reproduction, editing, or reuse of the photographs and
+              images from this coverage, including on social media or other websites, is strictly prohibited without
+              prior written permission.
+            </p>
+          ) : (
+            <p>
+              Source:{' '}
+              {post.source.sourceName ? (
+                <a
+                  href={post.source.sourceURL}
+                  target="_blank"
+                  className="text-light-blue hover:text-dark-blue font-sans transition-colors"
+                >
+                  {post.source.sourceName}
+                </a>
+              ) : (
+                post.source.sourceName
+              )}
+              . Non-original articles are adapted from the mentioned Portuguese sources as part of our mission to bring
+              region information to international readers. If any of this content is copyright-protected and you wish to
+              request its removal or modification, please contact us.
+            </p>
+          )}
+        </div>
       </div>
 
       {relatedPosts.length > 0 && (
@@ -109,7 +147,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           <div className={MAIN_CONTAINER_CLASSES}>
             <div className="text-blue mb-4 font-sans text-xl font-medium tracking-wide uppercase">Related News</div>
             <div className="grid gap-8">
-              <PostsList posts={relatedPosts} omitCategory />
+              <PostsList posts={relatedPosts} omitCategory compact />
             </div>
           </div>
         </div>
