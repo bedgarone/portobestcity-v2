@@ -47,3 +47,8 @@ export interface Author extends SanityDocument {
 export interface Keyword extends SanityDocument {
   name: string
 }
+
+export type PageProps<T extends Record<string, string> = {}> = {
+  params: Promise<T>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}

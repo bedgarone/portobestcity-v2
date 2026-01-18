@@ -4,7 +4,15 @@ import { useState, KeyboardEvent } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { SearchIcon } from 'lucide-react'
 
-export function SearchBar({ placeholder = 'Search', onNavigate }: { placeholder?: string; onNavigate?: () => void }) {
+export function SearchBar({
+  placeholder = 'Search',
+  onNavigate,
+  border,
+}: {
+  placeholder?: string
+  onNavigate?: () => void
+  border?: boolean
+}) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [phrase, setPhrase] = useState(searchParams.get('q') || '')
@@ -36,7 +44,9 @@ export function SearchBar({ placeholder = 'Search', onNavigate }: { placeholder?
         value={phrase}
         onChange={(e) => setPhrase(e.target.value)}
         onKeyDown={handleEnterKey}
-        className="text-blue w-full bg-white py-2 pr-10 pl-4"
+        className={`text-blue focus:ring-blue w-full bg-white py-2 pr-10 pl-4 focus:ring-2 focus:outline-none ${
+          border ? 'border-surface-blue border-2' : ''
+        }`}
       />
       <button
         aria-label="Search"

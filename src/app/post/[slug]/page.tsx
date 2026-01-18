@@ -1,7 +1,7 @@
 import { PortableText } from 'next-sanity'
 import { client } from '@/sanity/client'
 import { REVALIDATE_HOURLY, urlFor, MAIN_CONTAINER_CLASSES, DETAULT_IMAGE_SIZES } from '@/app/utils'
-import { Post } from '@/app/types'
+import { PageProps, Post } from '@/app/types'
 import { ImageStandalone } from '@/components/ImageStandalone'
 import DateStamp from '@/components/DateStamp'
 import { UserRoundPen, Newspaper } from 'lucide-react'
@@ -10,6 +10,7 @@ import { YouTubeEmbed } from '@/components/YoutubeEmbed'
 import { ImageGallery } from '@/components/ImageGallery'
 import Link from 'next/link'
 import PostsList from '@/components/PostsList'
+import type { Metadata } from 'next'
 
 const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]{..., author->, category->, mainImage {..., asset->{_id, metadata {dimensions}}}, keywords[]->}`
 const RELATED_POSTS_QUERY = `*[_type == 'post' && hidden != true && count((keywords[]->_id)[@ in $keywordIds]) > 0 && slug.current != $currentSlug]{
@@ -29,12 +30,65 @@ const portableTextComponents = {
     h3: ({ children }: any) => <h3 className="mt-6 mb-3 text-xl font-bold">{children}</h3>,
     h4: ({ children }: any) => <h4 className="mt-4 mb-2 text-lg font-semibold">{children}</h4>,
     normal: ({ children }: any) => <p className="leading-7">{children}</p>,
+    interviewQuestion: ({ children }: any) => (
+      <p className="text-dark-blue my-8 pl-5 text-end font-sans text-sm">{children}</p>
+    ),
+  },
+  marks: {
+    link: ({ children, value }: any) => {
+      const rel = !value.href.startsWith('/') ? 'noreferrer noopener' : undefined
+      const target = !value.href.startsWith('/') ? '_blank' : undefined
+      return (
+        <a href={value.href} target={target} rel={rel} className="text-blue hover:text-dark-blue transition-colors">
+          {children}
+        </a>
+      )
+    },
   },
   types: {
     image: ImageStandalone,
     imageGallery: ImageGallery,
     youtubeEmbed: YouTubeEmbed,
   },
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const post: Post = await client.fetch<Post>(POST_QUERY, await params, options)
+
+  if (!post) return {}
+
+  const siteUrl = 'https://portobest.city'
+  const postImageUrl = urlFor(post.mainImage)?.url() || '/assets/og_image.jpg'
+  const description = post.subtitle || 'Click to read the full article on PortoBestCity.'
+
+  return {
+    title: post.title,
+    description: description,
+    openGraph: {
+      title: post.title,
+      description: description,
+      url: `${siteUrl}/post/${post.slug.current}`,
+      siteName: 'PortoBestCity',
+      images: [
+        {
+          url: postImageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.imageAlt || post.title,
+        },
+      ],
+      locale: 'en_GB',
+      type: 'article',
+      publishedTime: post.publishedAt,
+      authors: [post.author?.name],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: description,
+      images: [postImageUrl],
+    },
+  }
 }
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -74,7 +128,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
             )}
           </div>
         </div>
-        <div className="text-medium-grey bg-surface-blue mb-4 px-2 py-1 italic">{post.subtitle}</div>
+        {post.subtitle && <div className="text-medium-grey bg-surface-blue mb-4 px-2 py-1 italic">{post.subtitle}</div>}
         {postImageUrl && (
           <div className="mb-4">
             <Image

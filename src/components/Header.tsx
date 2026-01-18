@@ -83,7 +83,11 @@ export function Header() {
           }}
         />
       </div>
-      <div className={MAIN_CONTAINER_CLASSES + ' text-dark-blue mb-4 hidden font-sans lg:flex lg:justify-end lg:gap-6'}>
+      <div
+        className={
+          MAIN_CONTAINER_CLASSES + ' text-dark-blue mt-2 mb-4 hidden font-sans lg:flex lg:justify-end lg:gap-6'
+        }
+      >
         {navigationPages.map((page) => (
           <Link
             key={page.link}
