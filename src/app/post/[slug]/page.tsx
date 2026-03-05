@@ -1,6 +1,6 @@
 import { PortableText } from 'next-sanity'
 import { client } from '@/sanity/client'
-import { REVALIDATE_HOURLY, urlFor, MAIN_CONTAINER_CLASSES, DETAULT_IMAGE_SIZES } from '@/app/utils'
+import { REVALIDATE_HOURLY, urlFor, MAIN_CONTAINER_CLASSES, DEFAULT_IMAGE_SIZES } from '@/app/utils'
 import { PageProps, Post } from '@/app/types'
 import { ImageStandalone } from '@/components/ImageStandalone'
 import DateStamp from '@/components/DateStamp'
@@ -12,7 +12,7 @@ import Link from 'next/link'
 import PostsList from '@/components/PostsList'
 import type { Metadata } from 'next'
 
-const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]{..., author->, category->, mainImage {..., asset->{_id, metadata {dimensions}}}, keywords[]->}`
+const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]{..., author->, category->, mainImage {..., asset->{_id, metadata {dimensions}}}, "keywords": coalesce(keywords[]-> , [])}`
 const RELATED_POSTS_QUERY = `*[_type == 'post' && hidden != true && count((keywords[]->_id)[@ in $keywordIds]) > 0 && slug.current != $currentSlug]{
   ...,
   author->,
@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!post) return {}
 
   const siteUrl = 'https://portobest.city'
-  const postImageUrl = urlFor(post.mainImage)?.url() || '/assets/og_image.jpg'
+  const postImageUrl = urlFor(post.mainImage)?.width(1200).quality(85).url() || '/assets/og_image.jpg'
   const description = post.subtitle || 'Click to read the full article on PortoBestCity.'
 
   return {
@@ -99,7 +99,6 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
     { keywordIds: post.keywords.map((k) => k._id), currentSlug: post.slug.current },
     options,
   )
-
   return (
     <main className="text-dark-grey">
       <div className={MAIN_CONTAINER_CLASSES}>
@@ -110,7 +109,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
             </div>
           </Link>
           <h1 className="mb-2 text-3xl font-semibold">{post.title}</h1>
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-x-4 gap-y-1">
             <DateStamp dateString={post.publishedAt} />
             <div className="text-medium-grey flex items-center gap-1">
               <UserRoundPen className="size-2.5" />
@@ -137,7 +136,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
               width={post.mainImage.asset.metadata.dimensions.width}
               height={post.mainImage.asset.metadata.dimensions.height}
               quality={75}
-              sizes={DETAULT_IMAGE_SIZES}
+              sizes={DEFAULT_IMAGE_SIZES}
               className="h-auto w-full"
               priority
             />

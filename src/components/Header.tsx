@@ -21,8 +21,9 @@ export function Header() {
   return (
     <header className="mb-4">
       <div className="flex">
-        <div className="relative flex-1">
-          <div className="[0_50%] h-16 w-full overflow-hidden bg-[url('/assets/TilesRepeatMedium_Soft.png')] bg-[length:auto_170%] bg-repeat-x opacity-50 lg:h-26"></div>
+        <div className="[0_50%] relative h-16 w-full lg:h-26">
+          <div className="absolute inset-0 overflow-hidden bg-[url('/assets/TilesRepeatMedium_Soft.png')] bg-[length:auto_170%] bg-repeat-x opacity-50" />
+          <div className="from-dark-grey/8 pointer-events-none absolute inset-x-0 bottom-0 h-3 bg-gradient-to-t to-transparent" />
         </div>
 
         <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
@@ -72,7 +73,7 @@ export function Header() {
           src="/assets/LogoVF_Web.png"
           alt="PortoBestCity"
           className="relative cursor-pointer p-0"
-          width={250}
+          width={280}
           height={300}
           quality={100}
           priority
@@ -85,7 +86,7 @@ export function Header() {
       </div>
       <div
         className={
-          MAIN_CONTAINER_CLASSES + ' text-dark-blue mt-2 mb-4 hidden font-sans lg:flex lg:justify-end lg:gap-6'
+          MAIN_CONTAINER_CLASSES + ' text-dark-blue mt-3 mb-4 hidden font-sans lg:flex lg:justify-end lg:gap-6'
         }
       >
         {navigationPages.map((page) => (
