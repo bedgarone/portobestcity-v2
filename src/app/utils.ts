@@ -4,7 +4,7 @@ import imageUrlBuilder from '@sanity/image-url'
 import { metadata } from './layout'
 
 export const REVALIDATE_HOURLY = 3600
-export const MAIN_CONTAINER_CLASSES = 'container mx-auto max-w-2xl px-4 md:px-10' //max-w-6xl for larger screens later version
+export const MAIN_CONTAINER_CLASSES = 'container mx-auto max-w-7xl px-4 md:px-10'
 export const DEFAULT_IMAGE_SIZES = '(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1000px'
 
 export const navigationPages = [

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { urlFor } from '@/app/utils'
 import DateStamp from '@/components/DateStamp'
+import { useBreakpoint } from '@/app/hooks/useBreakpoint'
 
 const PostCard: React.FC<{ post: Post; omitCategory: boolean; compact: boolean }> = ({
   post,
@@ -10,10 +11,11 @@ const PostCard: React.FC<{ post: Post; omitCategory: boolean; compact: boolean }
   compact,
 }) => {
   const postImageUrl = urlFor(post.mainImage)?.url()
+  const mobile = !useBreakpoint('md')
 
   return (
     <Link href={`/post/${post.slug.current}`}>
-      {post.original && !compact ? (
+      {(post.original || !mobile) && !compact ? (
         <article className="group mb-5 cursor-pointer">
           <div className="relative aspect-[16/9] w-full overflow-hidden">
             {postImageUrl && (
@@ -42,7 +44,7 @@ const PostCard: React.FC<{ post: Post; omitCategory: boolean; compact: boolean }
           </div>
 
           <div className="my-3 space-y-2">
-            <h2 className="text-dark-grey group-hover:text-dark-blue text-xl leading-tight font-medium transition-colors">
+            <h2 className="text-dark-grey group-hover:text-dark-blue line-clamp-2 text-xl leading-tight font-medium transition-colors">
               {post.title}
             </h2>
             <DateStamp dateString={post.publishedAt} />

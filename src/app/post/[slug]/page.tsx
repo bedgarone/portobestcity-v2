@@ -102,96 +102,104 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   return (
     <main className="text-dark-grey">
       <div className={MAIN_CONTAINER_CLASSES}>
-        <div className="mb-6">
-          <Link href={`/category/${post.category.slug.current}`}>
-            <div className="text-dark-blue hover:text-blue font-sans font-medium uppercase transition-colors">
-              {post.category.title}
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-3">
+          <div className="col-span-1 lg:col-span-2">
+            <div className="mb-6">
+              <Link href={`/category/${post.category.slug.current}`}>
+                <div className="text-dark-blue hover:text-blue font-sans font-medium uppercase transition-colors">
+                  {post.category.title}
+                </div>
+              </Link>
+              <h1 className="mb-2 text-3xl font-semibold">{post.title}</h1>
+              <div className="flex flex-wrap gap-x-4 gap-y-1">
+                <DateStamp dateString={post.publishedAt} />
+                <div className="text-medium-grey flex items-center gap-1">
+                  <UserRoundPen className="size-2.5" />
+                  <div className="font-sans text-xs font-medium uppercase">{post.author.name}</div>
+                </div>
+                {!post.original && post.source.sourceName && (
+                  <div className="text-medium-grey flex items-center gap-1">
+                    <Newspaper className="size-2.5" />
+                    <div className="text-credit-grey hover:text-medium-grey font-sans text-xs font-medium uppercase transition-colors">
+                      <a href={post.source.sourceURL} target="_blank">
+                        {post.source.sourceName}
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
-          </Link>
-          <h1 className="mb-2 text-3xl font-semibold">{post.title}</h1>
-          <div className="flex flex-wrap gap-x-4 gap-y-1">
-            <DateStamp dateString={post.publishedAt} />
-            <div className="text-medium-grey flex items-center gap-1">
-              <UserRoundPen className="size-2.5" />
-              <div className="font-sans text-xs font-medium uppercase">{post.author.name}</div>
+            {post.subtitle && (
+              <div className="text-medium-grey bg-surface-blue mb-4 px-2 py-1 italic">{post.subtitle}</div>
+            )}
+            {postImageUrl && (
+              <div className="mb-4">
+                <Image
+                  src={postImageUrl}
+                  alt={'Main image of ' + post.title}
+                  width={post.mainImage.asset.metadata.dimensions.width}
+                  height={post.mainImage.asset.metadata.dimensions.height}
+                  quality={75}
+                  sizes={DEFAULT_IMAGE_SIZES}
+                  className="h-auto w-full"
+                  priority
+                />
+                {post.imageSource && (
+                  <p className="text-credit-grey mt-1 text-right font-sans text-xs">{post.imageSource}</p>
+                )}
+              </div>
+            )}
+            <div className="prose prose-lg prose-headings:font-bold prose-h2:text-2xl prose-h3:text-xl prose-h4:text-xl prose-p:text-base max-w-none space-y-4">
+              {Array.isArray(post.body) && <PortableText value={post.body} components={portableTextComponents} />}
             </div>
-            {!post.original && post.source.sourceName && (
-              <div className="text-medium-grey flex items-center gap-1">
-                <Newspaper className="size-2.5" />
-                <div className="text-credit-grey hover:text-medium-grey font-sans text-xs font-medium uppercase transition-colors">
-                  <a href={post.source.sourceURL} target="_blank">
-                    {post.source.sourceName}
-                  </a>
+            {/* if not original, put a link with Source: (link) plus explanation about non-original content */}
+            <div className="text-credit-grey py-6 text-end font-sans text-xs">
+              {post.original ? (
+                <p>
+                  All rights reserved by PortoBestCity. Any copying, reproduction, editing, or reuse of the photographs
+                  and images from this coverage, including on social media or other websites, is strictly prohibited
+                  without prior written permission.
+                </p>
+              ) : (
+                <p>
+                  Source:{' '}
+                  {post.source.sourceName ? (
+                    <a
+                      href={post.source.sourceURL}
+                      target="_blank"
+                      className="text-light-blue hover:text-dark-blue font-sans transition-colors"
+                    >
+                      {post.source.sourceName}
+                    </a>
+                  ) : (
+                    post.source.sourceName
+                  )}
+                  . Non-original articles are adapted from the mentioned Portuguese sources as part of our mission to
+                  bring region information to international readers. If any of this content is copyright-protected and
+                  you wish to request its removal or modification, please contact us.
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="col-span-1">
+            {post.keywords.length > 0 && (
+              <div className="mt-6">
+                <div className="flex flex-wrap gap-2">
+                  {post.keywords.map((keyword) => (
+                    <Link key={keyword._id} href={`/keyword/${keyword.name}`}>
+                      <span
+                        key={keyword._id}
+                        className="bg-light-grey text-blue inline-block px-2 py-1 text-center font-sans text-xs tracking-wider uppercase"
+                      >
+                        {`#${keyword.name}`}
+                      </span>
+                    </Link>
+                  ))}
                 </div>
               </div>
             )}
           </div>
-        </div>
-        {post.subtitle && <div className="text-medium-grey bg-surface-blue mb-4 px-2 py-1 italic">{post.subtitle}</div>}
-        {postImageUrl && (
-          <div className="mb-4">
-            <Image
-              src={postImageUrl}
-              alt={'Main image of ' + post.title}
-              width={post.mainImage.asset.metadata.dimensions.width}
-              height={post.mainImage.asset.metadata.dimensions.height}
-              quality={75}
-              sizes={DEFAULT_IMAGE_SIZES}
-              className="h-auto w-full"
-              priority
-            />
-            {post.imageSource && (
-              <p className="text-credit-grey mt-1 text-right font-sans text-xs">{post.imageSource}</p>
-            )}
-          </div>
-        )}
-        <div className="prose prose-lg prose-headings:font-bold prose-h2:text-2xl prose-h3:text-xl prose-h4:text-xl prose-p:text-base max-w-none space-y-4">
-          {Array.isArray(post.body) && <PortableText value={post.body} components={portableTextComponents} />}
-        </div>
-
-        {post.keywords.length > 0 && (
-          <div className="mt-6">
-            <div className="flex flex-wrap gap-2">
-              {post.keywords.map((keyword) => (
-                <Link key={keyword._id} href={`/keyword/${keyword.name}`}>
-                  <span
-                    key={keyword._id}
-                    className="bg-light-grey text-blue inline-block px-2 py-1 text-center font-sans text-xs tracking-wider uppercase"
-                  >
-                    {`#${keyword.name}`}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-        {/* if not original, put a link with Source:  (link) plus explanation about non-original content */}
-        <div className="text-credit-grey py-6 text-end font-sans text-xs">
-          {post.original ? (
-            <p>
-              All rights reserved by PortoBestCity. Any copying, reproduction, editing, or reuse of the photographs and
-              images from this coverage, including on social media or other websites, is strictly prohibited without
-              prior written permission.
-            </p>
-          ) : (
-            <p>
-              Source:{' '}
-              {post.source.sourceName ? (
-                <a
-                  href={post.source.sourceURL}
-                  target="_blank"
-                  className="text-light-blue hover:text-dark-blue font-sans transition-colors"
-                >
-                  {post.source.sourceName}
-                </a>
-              ) : (
-                post.source.sourceName
-              )}
-              . Non-original articles are adapted from the mentioned Portuguese sources as part of our mission to bring
-              region information to international readers. If any of this content is copyright-protected and you wish to
-              request its removal or modification, please contact us.
-            </p>
-          )}
         </div>
       </div>
 
@@ -200,7 +208,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           <div className={MAIN_CONTAINER_CLASSES}>
             <div className="text-blue mb-4 font-sans text-xl font-medium tracking-wide uppercase">Related News</div>
             <div className="grid gap-8">
-              <PostsList posts={relatedPosts} omitCategory compact />
+              <PostsList posts={relatedPosts} omitCategory compact noActionButton pageSize={4} />
             </div>
           </div>
         </div>

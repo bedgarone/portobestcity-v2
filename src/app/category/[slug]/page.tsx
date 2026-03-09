@@ -19,7 +19,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       </h1>
       <p className="mt-2 mb-6 text-center text-sm italic">{category.description}</p>
       {posts.length === 0 && <p>No posts found in this category.</p>}
-      <PostsList posts={posts} omitCategory />
+      <PostsList posts={posts} omitCategory pageSize={6} />
     </main>
   )
 }

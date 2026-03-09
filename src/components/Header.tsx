@@ -8,6 +8,7 @@ import { SearchBar } from '@/components/SearchBar'
 import { MenuIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { WelcomeText } from './WelcomeSentence'
 
 export function Header() {
   const router = useRouter()
@@ -60,11 +61,7 @@ export function Header() {
 
             <hr className="border-t-surface-blue border-0 border-t" />
 
-            <p className="font-serif text-lg italic">
-              Welcome to Porto. <br />
-              We respect your <strong>privacy</strong>: no tracking, no cookies consent, and no ads chasing you around.
-              Just genuine Portuense warmth, Douro magic, and freedom to explore.
-            </p>
+            <WelcomeText />
           </SheetContent>
         </Sheet>
       </div>
