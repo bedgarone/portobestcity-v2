@@ -1,7 +1,6 @@
 import { PortableText } from 'next-sanity'
-import { client } from '@/sanity/client'
-import { REVALIDATE_HOURLY, urlFor, MAIN_CONTAINER_CLASSES, DEFAULT_IMAGE_SIZES } from '@/app/utils'
-import { PageProps, Post } from '@/app/types'
+import { urlFor, MAIN_CONTAINER_CLASSES, DEFAULT_IMAGE_SIZES } from '@/app/utils'
+import { Post } from '@/app/types'
 import { ImageStandalone } from '@/components/ImageStandalone'
 import DateStamp from '@/components/DateStamp'
 import { UserRoundPen, Newspaper } from 'lucide-react'
@@ -11,17 +10,11 @@ import { ImageGallery } from '@/components/ImageGallery'
 import Link from 'next/link'
 import PostsList from '@/components/PostsList'
 import type { Metadata } from 'next'
+import { fetchPost, fetchRelatedPosts } from '@/app/fetchers'
 
-const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]{..., author->, category->, mainImage {..., asset->{_id, metadata {dimensions}}}, "keywords": coalesce(keywords[]-> , [])}`
-const RELATED_POSTS_QUERY = `*[_type == 'post' && hidden != true && count((keywords[]->_id)[@ in $keywordIds]) > 0 && slug.current != $currentSlug]{
-  ...,
-  author->,
-  category->,
-  "matchCount": count((keywords[]->_id)[@ in $keywordIds])
-} | order(matchCount desc, publishedAt desc)[0..2]
-`
-
-const options = { next: { revalidate: REVALIDATE_HOURLY } }
+type PageProps = {
+  params: Promise<{ slug: string }>
+}
 
 const portableTextComponents = {
   block: {
@@ -53,7 +46,7 @@ const portableTextComponents = {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const post: Post = await client.fetch<Post>(POST_QUERY, await params, options)
+  const post: Post = await fetchPost((await params).slug)
 
   if (!post) return {}
 
@@ -91,13 +84,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
-  const post: Post = await client.fetch<Post>(POST_QUERY, await params, options)
+export default async function PostPage({ params }: PageProps) {
+  const postSlug = (await params).slug
+  const post: Post = await fetchPost(postSlug)
   const postImageUrl = urlFor(post.mainImage)?.url()
-  const relatedPosts: Post[] = await client.fetch<Post[]>(
-    RELATED_POSTS_QUERY,
-    { keywordIds: post.keywords.map((k) => k._id), currentSlug: post.slug.current },
-    options,
+  const relatedPosts = await fetchRelatedPosts(
+    postSlug,
+    post.keywords.map((k) => k._id),
   )
   return (
     <main className="text-dark-grey">

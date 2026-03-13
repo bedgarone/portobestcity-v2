@@ -1,16 +1,9 @@
-import { client } from '@/sanity/client'
-import { MAIN_CONTAINER_CLASSES, metadataDefaults, REVALIDATE_HOURLY } from '@/app/utils'
-import { Post } from '@/app/types'
+import { MAIN_CONTAINER_CLASSES, metadataDefaults } from '@/app/utils'
 import PostsList from '@/components/PostsList'
 import type { Metadata } from 'next'
 import { WelcomeText } from '@/components/WelcomeSentence'
 import SidebarPostsList from '@/components/Sidebar/SidebarPostsList'
-
-const POSTS_QUERY = `*[_type == 'post' && defined(slug.current) && hidden != true]{...,author->,category->} | order(publishedAt desc)[0..20]`
-const ORIGINAL_POSTS_QUERY = `*[_type == 'post' && defined(slug.current) && hidden != true && original == true]{...,author->,category->} | order(publishedAt desc)[0..3]`
-const AWARDS_POSTS_QUERY = `*[_type == "post" && hidden != true && "portoawards" in keywords[]->name]{...,category->,mainImage {..., asset->{_id, metadata {dimensions}}},"keywords": coalesce(keywords[]-> , [])} | order(publishedAt desc)[0..3]`
-
-const options = { next: { revalidate: REVALIDATE_HOURLY } }
+import { fetchAwardsPosts, fetchHomePosts, fetchOriginalPosts } from '@/app/fetchers'
 
 export const metadata: Metadata = {
   title: metadataDefaults.title,
@@ -43,9 +36,9 @@ export const metadata: Metadata = {
 }
 
 export default async function HomePage() {
-  const posts = await client.fetch<Post[]>(POSTS_QUERY, {}, options)
-  const originalPosts = await client.fetch<Post[]>(ORIGINAL_POSTS_QUERY, {}, options)
-  const awardsPosts = await client.fetch<Post[]>(AWARDS_POSTS_QUERY, {}, options)
+  const posts = await fetchHomePosts()
+  const originalPosts = await fetchOriginalPosts()
+  const awardsPosts = await fetchAwardsPosts()
 
   return (
     <div className={MAIN_CONTAINER_CLASSES}>

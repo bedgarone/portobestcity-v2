@@ -1,7 +1,6 @@
 import { client } from '@/sanity/client'
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import imageUrlBuilder from '@sanity/image-url'
-import { metadata } from './layout'
 
 export const REVALIDATE_HOURLY = 3600
 export const MAIN_CONTAINER_CLASSES = 'container mx-auto max-w-7xl px-4 md:px-10'
