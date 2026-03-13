@@ -11,6 +11,7 @@ import Link from 'next/link'
 import PostsList from '@/components/PostsList'
 import type { Metadata } from 'next'
 import { fetchPost, fetchRelatedPosts } from '@/app/fetchers'
+import { notFound } from 'next/navigation'
 
 type PageProps = {
   params: Promise<{ slug: string }>
@@ -87,6 +88,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function PostPage({ params }: PageProps) {
   const postSlug = (await params).slug
   const post: Post = await fetchPost(postSlug)
+  if (!post) return notFound()
   const postImageUrl = urlFor(post.mainImage)?.url()
   const relatedPosts = await fetchRelatedPosts(
     postSlug,

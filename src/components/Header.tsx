@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { MAIN_CONTAINER_CLASSES, navigationPages } from '@/app/utils'
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { SearchBar } from '@/components/SearchBar'
-import { MenuIcon } from 'lucide-react'
+import { MenuIcon, SearchIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { WelcomeText } from './WelcomeSentence'
@@ -95,6 +95,12 @@ export function Header() {
             {page.title}
           </Link>
         ))}
+
+        <SearchIcon
+          strokeWidth={2}
+          onClick={() => setMobileMenuOpen(true)}
+          className="text-dark-blue hover:text-blue h-4 w-4 cursor-pointer transition-colors"
+        />
       </div>
     </header>
   )
