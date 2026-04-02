@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
-import { DETAULT_IMAGE_SIZES, urlFor } from '@/app/utils'
+import { DEFAULT_IMAGE_SIZES, urlFor } from '@/app/utils'
 import { SanityImage } from '@/app/types'
+import { getImageDimensions } from '@sanity/asset-utils'
 
 export function ImageGallery({ value }: any) {
   const { images, caption } = value
@@ -22,16 +23,19 @@ export function ImageGallery({ value }: any) {
         <CarouselContent>
           {images.map((image: SanityImage, index: number) => {
             const imageUrl = urlFor(image.asset)?.url()
+            const { width, height } = getImageDimensions(image)
             return (
               imageUrl && (
                 <CarouselItem key={index}>
-                  <div className="relative aspect-video w-full">
+                  <div className="relative w-full">
                     <Image
                       src={imageUrl}
                       alt={`Gallery image ${index + 1}`}
-                      fill
-                      className="object-contain"
-                      sizes={DETAULT_IMAGE_SIZES}
+                      width={width}
+                      height={height}
+                      className="h-auto w-full object-cover"
+                      sizes={DEFAULT_IMAGE_SIZES}
+                      quality={80}
                     />
                   </div>
                 </CarouselItem>

@@ -5,9 +5,10 @@ import Image from 'next/image'
 import { MAIN_CONTAINER_CLASSES, navigationPages } from '@/app/utils'
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { SearchBar } from '@/components/SearchBar'
-import { MenuIcon } from 'lucide-react'
+import { MenuIcon, SearchIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { WelcomeText } from './WelcomeSentence'
 
 export function Header() {
   const router = useRouter()
@@ -21,8 +22,9 @@ export function Header() {
   return (
     <header className="mb-4">
       <div className="flex">
-        <div className="relative flex-1">
-          <div className="[0_50%] h-16 w-full overflow-hidden bg-[url('/assets/TilesRepeatMedium_Soft.png')] bg-[length:auto_170%] bg-repeat-x opacity-50 lg:h-26"></div>
+        <div className="[0_50%] relative h-16 w-full lg:h-26">
+          <div className="absolute inset-0 overflow-hidden bg-[url('/assets/TilesRepeatMedium_Soft.png')] bg-[length:auto_170%] bg-repeat-x opacity-50" />
+          <div className="from-dark-grey/8 pointer-events-none absolute inset-x-0 bottom-0 h-3 bg-gradient-to-t to-transparent" />
         </div>
 
         <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
@@ -59,20 +61,16 @@ export function Header() {
 
             <hr className="border-t-surface-blue border-0 border-t" />
 
-            <p className="font-serif text-lg italic">
-              Welcome to Porto. <br />
-              We respect your <strong>privacy</strong>: no tracking, no cookies consent, and no ads chasing you around.
-              Just genuine Portuense warmth, Douro magic, and freedom to explore.
-            </p>
+            <WelcomeText />
           </SheetContent>
         </Sheet>
       </div>
-      <div className={MAIN_CONTAINER_CLASSES + ' -mt-5'}>
+      <div className={MAIN_CONTAINER_CLASSES}>
         <Image
           src="/assets/LogoVF_Web.png"
           alt="PortoBestCity"
-          className="relative cursor-pointer p-0"
-          width={250}
+          className="relative -mt-5 w-[280px] cursor-pointer p-0 lg:-mt-6 lg:w-[400px]"
+          width={400}
           height={300}
           quality={100}
           priority
@@ -85,7 +83,7 @@ export function Header() {
       </div>
       <div
         className={
-          MAIN_CONTAINER_CLASSES + ' text-dark-blue mt-2 mb-4 hidden font-sans lg:flex lg:justify-end lg:gap-6'
+          MAIN_CONTAINER_CLASSES + ' text-dark-blue mt-3 mb-4 hidden font-sans lg:flex lg:justify-end lg:gap-6'
         }
       >
         {navigationPages.map((page) => (
@@ -97,6 +95,12 @@ export function Header() {
             {page.title}
           </Link>
         ))}
+
+        <SearchIcon
+          strokeWidth={2}
+          onClick={() => setMobileMenuOpen(true)}
+          className="text-dark-blue hover:text-blue h-4 w-4 cursor-pointer transition-colors"
+        />
       </div>
     </header>
   )

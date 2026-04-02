@@ -1,4 +1,4 @@
-import { urlFor, DETAULT_IMAGE_SIZES } from '@/app/utils'
+import { urlFor, DEFAULT_IMAGE_SIZES } from '@/app/utils'
 import Image from 'next/image'
 import { SanityImage } from '@/app/types'
 import { getImageDimensions } from '@sanity/asset-utils'
@@ -17,8 +17,8 @@ export function ImageStandalone({ value }: { value: SanityImage }) {
         alt={caption ?? 'Image'}
         width={width}
         height={height}
-        quality={75}
-        sizes={DETAULT_IMAGE_SIZES}
+        quality={80}
+        sizes={DEFAULT_IMAGE_SIZES}
         className="h-auto w-full"
         loading="lazy"
       />

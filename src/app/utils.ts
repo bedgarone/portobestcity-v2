@@ -1,11 +1,13 @@
 import { client } from '@/sanity/client'
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import imageUrlBuilder from '@sanity/image-url'
-import { metadata } from './layout'
 
 export const REVALIDATE_HOURLY = 3600
-export const MAIN_CONTAINER_CLASSES = 'container mx-auto max-w-2xl px-4 md:px-10' //max-w-6xl for larger screens later version
-export const DETAULT_IMAGE_SIZES = '(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1000px'
+export const DEFAULT_IMAGE_SIZES = '(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1000px'
+export const LARGE_IMAGE_SIZES = '(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px'
+
+export const MAIN_CONTAINER_CLASSES = 'container mx-auto max-w-7xl px-4 md:px-10'
+export const SIDEBAR_TITLE_CLASSES = 'text-blue font-sans text-xl font-medium tracking-wide uppercase'
 
 export const navigationPages = [
   { title: 'Tourism', link: '/category/tourism' },
