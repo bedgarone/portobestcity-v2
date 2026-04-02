@@ -17,7 +17,7 @@ export function ImageStandalone({ value }: { value: SanityImage }) {
         alt={caption ?? 'Image'}
         width={width}
         height={height}
-        quality={75}
+        quality={80}
         sizes={DEFAULT_IMAGE_SIZES}
         className="h-auto w-full"
         loading="lazy"

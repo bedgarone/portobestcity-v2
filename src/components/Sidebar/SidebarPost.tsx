@@ -2,7 +2,6 @@ import { Post } from '@/app/types'
 import Link from 'next/link'
 import Image from 'next/image'
 import { urlFor } from '@/app/utils'
-import DateStamp from '@/components/DateStamp'
 
 const SidebarPost: React.FC<{ post: Post }> = ({ post }) => {
   const postImageUrl = urlFor(post.mainImage)?.url()

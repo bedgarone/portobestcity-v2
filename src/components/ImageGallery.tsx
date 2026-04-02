@@ -35,6 +35,7 @@ export function ImageGallery({ value }: any) {
                       height={height}
                       className="h-auto w-full object-cover"
                       sizes={DEFAULT_IMAGE_SIZES}
+                      quality={80}
                     />
                   </div>
                 </CarouselItem>

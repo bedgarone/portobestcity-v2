@@ -65,12 +65,12 @@ export function Header() {
           </SheetContent>
         </Sheet>
       </div>
-      <div className={MAIN_CONTAINER_CLASSES + ' -mt-5'}>
+      <div className={MAIN_CONTAINER_CLASSES}>
         <Image
           src="/assets/LogoVF_Web.png"
           alt="PortoBestCity"
-          className="relative cursor-pointer p-0"
-          width={280}
+          className="relative -mt-5 w-[280px] cursor-pointer p-0 lg:-mt-6 lg:w-[400px]"
+          width={400}
           height={300}
           quality={100}
           priority
