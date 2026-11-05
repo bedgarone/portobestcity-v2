@@ -11,6 +11,7 @@ import { notFound } from 'next/navigation'
 import { PostHeader } from '@/app/post/[slug]/PostHeader'
 import { PostKeywords } from './PostKeywords'
 import { PostSidebar } from './PostSidebar'
+import ConcertSetlist from '@/components/ConcertSetlist'
 
 type PageProps = {
   params: Promise<{ slug: string }>
@@ -42,6 +43,7 @@ const portableTextComponents = {
     image: ImageStandalone,
     imageGallery: ImageGallery,
     youtubeEmbed: YouTubeEmbed,
+    concertSetlist: ConcertSetlist,
   },
 }
 

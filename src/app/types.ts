@@ -48,6 +48,21 @@ export interface Keyword extends SanityDocument {
   name: string
 }
 
+export interface SetlistSong {
+  _key: string
+  title?: string
+  note?: string
+  divider?: string
+}
+
+export interface Setlist {
+  artist: string
+  venue: string
+  city: string
+  date: string
+  tracks: SetlistSong[]
+}
+
 export type PageProps<T extends Record<string, string> = {}> = {
   params: Promise<T>
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
