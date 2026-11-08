@@ -1,36 +1,47 @@
 # PortoBestCity
 
-This repository represents a full refresh of my media outlet **PortoBestCity**, rebuilt from the ground up with **NextJS**.  
-The content base remains powered by **Sanity**, with slight improvements to its schema.
+This repository represents a full refresh of my media outlet **PortoBestCity**, rebuilt from the ground up with **Next.js**.  
+The content base remains powered by **Sanity**, with improvements to its schema and integration.
 
-At this stage, the project is focused on a **mobile-first approach**, following the mockups created after a redo of the graphic identity:
+The project follows a **mobile-first approach**, based on the mockups created after a refresh of the graphic identity:
 
 <img width="2736" height="1221" alt="imagem" src="https://github.com/user-attachments/assets/fafa09e8-61e7-4e21-b10d-0592d110266f" />
 
-### Key Features
+## Phase 1 — Mobile Implementation
 
-- ⚡ **Next.js 15** with App Router and React Server Components
-- 🎨 **Mobile-first responsive design** with carefully crafted component variations
-- 📝 **Headless CMS architecture** powered by Sanity with enhanced schema
-- 🖼️ **Image optimization** with Next.js Image component
+The first phase focused on rebuilding the mobile experience using **Next.js 15**, **TypeScript** and the App Router. The frontend was developed around reusable components and React Server Components, with **Sanity** providing the content infrastructure through a tailored schema and a direct CMS integration.
 
-### Mobile Implementation Complete
+The mobile version was designed around a flexible article list system, where posts adapt their presentation according to their type and the context in which they appear.
 
-The mobile version is now finalized following the mockups I've designed after the graphic identity refresh. Development focused on building a flexible **article list component system** where posts present themselves differently based on article type and the list context they appear.
+Original content articles receive enhanced prominence. Article pages also support image galleries, video embeds, image credits and captions, as well as related news based on associated keywords.
 
-**Original content articles receive enhanced prominence** in listings. Articles gain new functionality:
--  **Image galleries** for photo-rich stories
--  **Video embeds** for multimedia content
--  **Image credits and captions** within article body
--  **Related news** based on associated keywords
-
-These improvements significantly elevate reporting quality and lay the foundation for future content-specific enhancements, such as:
-- ⚽ **Sports match results** and statistics for game coverage
-- 🎵 **Setlists and event details** for concert and music event coverage
--  **Custom content blocks** tailored to specific story types
-
-This architecture prioritizes the **exclusive article experience**, ensuring PortoBestCity's original journalism stands out with professional, feature-rich presentation.
-
-**Desktop version** is the next development phase, serving the considerable desktop audience that complements our mobile-dominant readership.
+This established the foundation for a more flexible editorial experience, with room for content-specific features.
 
 January, 2026.
+
+## Phase 2 — Desktop Implementation
+
+With the mobile experience completed, the second phase focused on bringing the new visual identity to desktop.
+
+Rather than simply scaling up the mobile layout, the desktop version was implemented directly from the previous mockups, with layouts and component variations designed to make better use of the available screen space.
+
+The goal was to maintain a consistent visual language across devices while giving the desktop experience its own structure and hierarchy. Instead of a bigger miniature, original posts have a bigger cover in the post page itself.
+
+<img width="2000" height="887" alt="imagem" src="https://github.com/user-attachments/assets/369e5754-7b80-46a5-8411-6150830861aa" />
+
+
+April, 2026.
+
+## Phase 3 — Content-Specific Components
+
+The third phase focused on taking the editorial experience further by tailoring the content presentation to the nature of each report.
+
+Different stories require different types of information. Instead of relying exclusively on a generic article layout, I introduced **specialized content blocks** in Sanity, allowing individual reports to include structured information that better fits their subject.
+
+This includes dedicated components for sports coverage, with match scoreboards and starting lineups, as well as concert setlists for music events.
+
+These blocks are integrated directly into the article content, combining the flexibility of Sanity's Portable Text with custom React components. This approach makes it possible to extend the editorial experience without compromising the content workflow.
+
+<img width="1598" height="887" alt="imagem" src="https://github.com/user-attachments/assets/dbbce4b6-9ad4-453f-96e1-8a7382e3f048" />
+
+November, 2026.
