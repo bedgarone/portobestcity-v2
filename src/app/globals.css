@@ -128,6 +128,11 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+.pitch {
+  background-color: #e4f2fe;
+  background-image: repeating-linear-gradient(0deg, transparent 0 28px, #ebf7ff 28px 56px);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
