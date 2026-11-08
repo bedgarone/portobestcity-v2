@@ -27,8 +27,8 @@ export default function ConcertSetlist({ value }: { value: Setlist }) {
   const formattedDate = dateFormat(date)
 
   return (
-    <aside aria-label="Setlist" className="bg-surface-blue relative p-5 sm:p-7">
-      <header className="border-dark-blue mb-4 flex items-start justify-between gap-3 border-b-2 pb-3">
+    <aside aria-label="Setlist" className="bg-surface-blue/40 relative p-5 sm:p-7">
+      <header className="border-dark-blue flex flex-col gap-3 border-b-2 pb-3 sm:flex-row sm:items-end sm:justify-between">
         <div className="min-w-0">
           <p className="text-dark-blue mb-1 font-sans text-sm font-medium tracking-[0.3em] uppercase">Setlist</p>
 
@@ -37,8 +37,7 @@ export default function ConcertSetlist({ value }: { value: Setlist }) {
 
         <div className="text-medium-grey shrink-0 text-right font-sans text-[11px] leading-relaxed font-medium tracking-wider uppercase">
           <p>{venue}</p>
-          {city && <p>{city}</p>}
-          <p>{formattedDate}</p>
+          {city && <p>{`${city} / ${formattedDate}`}</p>}
         </div>
       </header>
 
